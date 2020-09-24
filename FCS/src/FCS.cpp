@@ -22,8 +22,8 @@ void initLidar();
 double computeBMS();
 void configPID();
 void flightStage();
-void computeAtt(&double, &double, &double);
-void computePos(&double, &double, &double);
+void computeAtt(double, double, double);
+void computePos(double, double, double);
 void computeAlt();
 void controllerPos();
 void controllerAtt();
@@ -113,8 +113,8 @@ void setup() {
 
 void loop() {
 	flightStage();
-	computeAtt(&yaw, &pitch, &roll);
-	computePos(&X_x, &X_y, yaw)
+	computeAtt(yaw, pitch, roll);
+	computePos(X_x, X_y, yaw);
 	computeAlt();
 	controllerPos();
 	controllerAlt();
@@ -230,7 +230,7 @@ void flightStage()	{
 	}
 }
 
-void computeAtt(double &yaw, double &pitch, double &roll)    {
+void computeAtt(double yaw, double pitch, double roll)    {
     uint8_t system, accelCal, gyroCal, magCal = 0;
     IMU.getCalibration(&system, &gyroCal, &accelCal, &magCal);
     
@@ -249,12 +249,12 @@ void computeAtt(double &yaw, double &pitch, double &roll)    {
     yaw += (gyro.z() * dtAHRS);
 }
 
-void computePos(double &X_x, double &X_y, double yaw)   {
+void computePos(double X_x, double X_y, double yaw)   {
     X_x = (((deltaX * 0.001)) * cos(yaw * degToRad)) + ((deltaY * 0.001) * sin(yaw * degToRad)); 
     X_y = (((deltaX * 0.001)) * sin(yaw * degToRad)) + ((deltaY * 0.001) * cos(yaw * degToRad));
 }
 
-double computeAlt()   {
+void computeAlt()   {
     VL53L0X_RangingMeasurementData_t measure;
     lox.rangingTest(&measure, false);
     alt = (measure.RangeMilliMeter * 0.001);
