@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"name": "QMUAV",
+			"path": "."
+		},
+		{
+			"name": "FCS",
+			"path": "FCS"
+		}
+	],
+	"settings": {}
+}
